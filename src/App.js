@@ -12,21 +12,17 @@ function App(props) {
   const [hasMore, setHasMore] = useState(true)
 
 
-console.log(`characters`, characters)
   const getAll = async () => {
     try {
-   console.log(`first all`, all)
    if (people.length >= 82) setHasMore(false)
   
       const {data} = await axios.get(
         all.next
       )
       const nextPeople = data
-      console.log(`nextPeople`, nextPeople)
 
       const newCards = nextPeople.results.map(person => {
         const selectedCharacters = characters?.find(res => res.name === person.name)
-        console.log(`selectedCharacters`, selectedCharacters)
         if (selectedCharacters) {
           const { image } = selectedCharacters
           return {
@@ -45,18 +41,13 @@ console.log(`characters`, characters)
           image: 'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'
         }
       })
-      if (people.length === 82) {
-        setHasMore(false)
-      }
-      console.log(`cards`, newCards)
+ 
       setAll(nextPeople)
       setPeople([...people, ...newCards])
     } catch (error) {
       
     }
   }
-console.log(`people`, people.length)
-console.log(`hasMore`, hasMore)
 
   const getPeople = async () => {
     try {
@@ -72,8 +63,6 @@ console.log(`hasMore`, hasMore)
       const response  = characters.data
       //const { homeworld } = data
       
-      const selectedCharacters = response.find(res => res.name === data.name)
-      const { image } = selectedCharacters
       // const homeWorld = await axios.get(
       //     data.homeworld
       //   )
@@ -90,17 +79,9 @@ console.log(`hasMore`, hasMore)
           image: image
         }
       })
-      console.log(`cards`, cards)
 
       setPeople(cards)
       setAll(people.data)
-      setPerson({
-        name: data.name,
-        birthDay: data.birth_year,
-        gender: data.gender,
-        height: data.height,
-        image: image
-      })
       setCharacters(response)
       // console.log(`homeWorld`, homeWorld)
     } catch (error) {

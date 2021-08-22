@@ -7,7 +7,8 @@ import { Link } from "react-router-dom"
 import { withContext } from '../context/context'
 import ModalComponent from '../components/ModalComponent'
 import ListResidents from '../components/ListResidents'
-import { peopleOffline, selectedCharacter } from '../utils'
+//import { peopleOffline, selectedCharacter } from '../utils'
+import { peopleOffline}  from '../utils'
 
 const { Text, Title } = Typography
 class Detail extends Component {
@@ -51,8 +52,8 @@ class Detail extends Component {
         this.setState({ ...this.state, peopleOffline: peopleOffline })
       }
       if (!navigator.onLine) {
-        const {peopleOffline} = this.state
-        const selectedCharacter = (characters, person) => characters?.find((res) => res.name.toLowerCase() === person.name.toLowerCase())
+        // const {peopleOffline} = this.state
+        // const selectedCharacter = (characters, person) => characters?.find((res) => res.name.toLowerCase() === person.name.toLowerCase())
 
       }
     }

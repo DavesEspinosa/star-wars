@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { apiGetCharacters, cardInfo, apiPeople, apiPlanets, apiSearch, residentInfo, peopleInfoFilter, mycomparator, peopleOffline, characterOffline } from "../utils"
+import { apiGetCharacters, cardInfo, apiPeople, apiPlanets, apiSearch, residentInfo, peopleInfoFilter, peopleOffline, characterOffline } from "../utils"
 
 const { Consumer, Provider } = React.createContext()
 

@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import { Spin, Empty } from 'antd'
 import { withContext } from "../context/context";
 
-class Spinner extends React.Component {
+class Spinner extends Component {
     render() {
         const {isLoading} =this.props
         return (

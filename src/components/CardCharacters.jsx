@@ -10,30 +10,30 @@ class CardCharacters extends Component {
     render() {
         const { people } = this.props
         return (
-          <>
+        <div className='main-wrap'>
             {people.map(person => {
                 return (
+                  <div key={person.url} className='main-wrap-section'>
                 <Link
-                to={`/${person.name}`}
-                key={person.url}
+                to={`/${person.name}`}                
                 >
                 <Card
-                    
                     hoverable
                     style={{ width: 300 }}
                     cover={
                     <img alt={person.name} style={{ height: "400px" }} src={person.image} />
                     }
-                    actions={[<p>{person.homeWorld}</p>]}
                 >
                 <Meta
-                  title={person.name}
-                  description={person.height + " cm _" + person.gender}
+                  style={{textAlign: 'center', backgroundColor: 'black'}}
+                  title={<p className='starWarsFont'> {person.name}</p>}
                 />
               </Card>
-            </Link>)
-            })}
-          </>
+            </Link>
+              </div>
+            )
+          })}
+          </div>
         )
     }
 }

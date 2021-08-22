@@ -5,9 +5,7 @@ import Header from './../pages/Header'
 import CardCharacters from '../components/CardCharacters'
 import InfiniteScroll from "react-infinite-scroll-component"
 import Spinner from '../components/Spinner'
-import Filters from '../components/Filters'
 import './Main.css'
-import { peopleInfoFilter } from '../utils'
 
 class Main extends Component {
 
@@ -30,18 +28,18 @@ class Main extends Component {
     render() {
         const { people, getRestPeople, hasMore } = this.props
         const peopleFromLocalStorage = JSON.parse(localStorage.getItem('allPeople'))  
-
+        
         return (
-            <>
-            <Header onChange={this.onChange} />
-            <Filters />
-            <InfiniteScroll
+        <div className='app-wrap'>
+            <div className={people.length <= 4 ? 'starsOne' : 'starsAll'}>
+          <Header onChange={this.onChange} />
+        <InfiniteScroll
                 dataLength={people.length} 
                 next={getRestPeople}
                 hasMore={hasMore}
                 loader={<Spinner/>}
                 endMessage={
-                <p style={{ textAlign: "center"}}>
+                    <p style={{ textAlign: "center"}}>
                     <b>Yay! You have seen it all</b>
                 </p>
                 }
@@ -53,7 +51,9 @@ class Main extends Component {
                 </InfiniteScroll>
       
             <BackTop />
-            </>
+            </div>
+          </div>
+            
         )
     }
 }

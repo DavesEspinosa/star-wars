@@ -9,7 +9,9 @@ class Searcher extends Component {
 
         return (
             <>
-            <Search placeholder="input search text" onChange={this.props.onChange} bordered={false} enterButton />
+            <Search placeholder="input search text" onChange={this.props.onChange} enterButton allowClear
+      size="large"
+      style={{color:'#f0f8ff'}}/>
             </>
         )
     }

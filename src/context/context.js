@@ -146,20 +146,26 @@ class StarWarsProvider extends React.Component {
           if (selected) {
             const {residents} = await apiPlanets(selected.homeworld)
             const person = await cardInfo(selected, characters)
+            const data = await residentInfo(residents, characters)
+            const dataWithoutPerson = data.filter(result => result.name !== person.name)
+    
             this.setState({
               ...this.state,
               person: person,
-              residents: await residentInfo(residents, characters),
+              residents: dataWithoutPerson,
               isLoading: false
             })      
           }
             const {results} = await apiSearch(value)
             const {residents} = await apiPlanets(results[0].homeworld)
             const person = await cardInfo(results, characters)
+            const data = await residentInfo(residents, characters)
+            const dataWithoutPerson = data.filter(result => result.name !== person[0].name)
+
                   this.setState({
                       ...this.state,
                       person: person[0],
-                      residents: await residentInfo(residents, characters),
+                      residents: dataWithoutPerson,
                       isLoading: false
                     })
        

@@ -65,11 +65,9 @@ export const cardInfo = async (arrPeople, characters) => {
 }
 
   export const residentInfo = async (residents, characters) => {
-    
       const listResidents = residents.map(async (resident) => {
         const {data} = await axios.get(resident)
         const selected =  selectedCharacter(characters, data)
-
         return {
           ...data,
           image: selected?.image ? selected?.image : default_image,

@@ -1,25 +1,16 @@
 import React, { Component } from 'react'
-import { Card, List, Avatar, Collapse, Layout, Menu } from "antd"
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  CaretRightOutlined,
-} from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import {  List, Typography, Divider, Image, Row, Col } from "antd"
 import { withContext } from '../context/context'
-import Spinner from '../components/Spinner'
 import { allPeople } from '../utils'
+import ModalComponent from '../components/ModalComponent'
+import ListResidents from '../components/ListResidents'
 
-const { Meta } = Card
-const { Panel } = Collapse
-const { Header, Sider, Content } = Layout
-
+const { Text, Title } = Typography
 class Detail extends Component {
   state = {
     collapsed: false,
+    visible: true,  
+    isLoading: true
   }
 
     componentDidMount  () {
@@ -27,6 +18,10 @@ class Detail extends Component {
       const {params} = match
 
       this.personDetail(params.name)
+      this.setState({
+        visible: true,
+        isLoading: false
+      })
       this.getResidentsFromLocal() 
 
     }
@@ -37,7 +32,12 @@ class Detail extends Component {
        
       if (location.pathname !== prevProps.location.pathname) {
           this.personDetail(params.name)
+          this.setState({
+            visible: true,
+            isLoading: false
+          })
       }
+   
     }
 
     getResidentsFromLocal = () => {
@@ -54,96 +54,44 @@ class Detail extends Component {
         this.props.history.replace('/')
       }
   }
-  
-    toggle = () => {
-      this.setState({
-        collapsed: !this.state.collapsed,
-      });
-    }
+
+    handleCancel = () => {
+    this.setState({ visible: false });
+  };
 
     render() {
-        const {residents, person} = this.props
+        const {person} = this.props
+        const {visible, isLoading} = this.state
         return (
-          <Layout>
-          <Sider >
-            <Menu  >
-              {residents.map(resident => {
-                  return (
-                    <Menu.Item key={resident.url} icon={<Avatar src={resident.image} />}>
-                      {<Link to={`/${resident.name}`}>{resident.name}</Link>}
-                    </Menu.Item>
-                  )
-              })}
-            </Menu>
-          </Sider>
-          <Layout >
-            <Content>
-              <Card
-                    key={person.url}
-                    hoverable
-                    style={{ width: 300 }}
-                    cover={
-                    <img alt="example" style={{ height: "400px" }} src={person.image} />
-                    }
-                    actions={[<p>{person.homeWorld}</p>]}
-                >
-                <Meta
-                  title={person.name}
-                  description={person.height + " cm _" + person.gender}
-                />
-              </Card>
-            </Content>
-          </Layout>
-        </Layout>
-
-        //   <Layout>
-        //   <Sider>
-        //     <Collapse
-        //       ghost
-        //         accordion
-        //         style={{ backgroundColor: '#f7f7f7' }}
-        //         expandIcon={({ isActive }) => <CaretRightOutlined rotate={isActive ? 90 : 0} />}
-        //       >
-        //         <Panel header='Take a look to the related people' >
-        //            <List
-        //             itemLayout="horizontal"
-        //             dataSource={residents}
-        //             renderItem={person => {
-        //             return(
-        //               <List.Item>
-        //                 <List.Item.Meta
-        //                   avatar={<Avatar src={person.image} />}
-        //                   title={<Link to={`/${person.name}`}>{person.name}</Link>}
-        //                 />
-        //               </List.Item>
-                    
-        //             )}}
-        //             />
-        //         </Panel>
-        //       </Collapse>
-        //   </Sider>
-        //   <Layout>
-        //     <Header>Header</Header>
-        //     <Content>
-        //       <Card
-        //             key={person.url}
-        //             hoverable
-        //             style={{ width: 300 }}
-        //             cover={
-        //             <img alt="example" style={{ height: "400px" }} src={person.image} />
-        //             }
-        //             actions={[<p>{person.homeWorld}</p>]}
-        //         >
-        //         <Meta
-        //           title={person.name}
-        //           description={person.height + " cm _" + person.gender}
-        //         />
-        //       </Card></Content>
-        //   </Layout>
-        // </Layout>
-            
-            
-
+          <>
+          <Row style={{margin: '1rem'}}>
+              <Divider orientation="right"><Title level={4}>THE SELECTED CHARACTER</Title></Divider>
+            <Col span={6} >
+            <Image
+              width={200}
+              height={270}
+              src={person.image}
+            />
+            </Col>
+            <Col span={18}>
+                <List
+                  size="small"
+                  bordered
+                  >
+                    <List.Item><Text strong italic>Name:  </Text>{person.name}</List.Item>
+                    <List.Item><Text strong italic>Birthday:  </Text>{person.birth_year}</List.Item>
+                    <List.Item><Text strong italic>Gender:  </Text>{person.gender}</List.Item>
+                    <List.Item><Text strong italic>Color hair:  </Text>{person.hair_color}</List.Item>
+                    <List.Item><Text strong italic>Eyes color:  </Text>{person.eye_color}</List.Item>
+                    <List.Item><Text strong italic>Mass:  </Text>{person.mass}</List.Item>
+                    <List.Item><Text strong italic>Skin:  </Text>{person.skin_color}</List.Item>
+                  </List>
+            </Col>
+          </Row>
+              <ModalComponent isLoading={isLoading} visible={visible} handleCancel={this.handleCancel}/>
+              <ListResidents />
+           </>
+           
         )
     }
 }

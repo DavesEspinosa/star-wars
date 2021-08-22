@@ -7,7 +7,7 @@ class Spinner extends React.Component {
         const {isLoading} =this.props
         return (
             <Spin spinning={isLoading} tip="May the force be with you...">
-                <Empty description={false} />
+                {isLoading && <Empty description={false} />}
             </Spin>
         )
     }

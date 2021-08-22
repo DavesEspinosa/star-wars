@@ -32,7 +32,7 @@ export class ModalComponent extends Component {
                 <List.Item.Meta
                   avatar={<Avatar src={item.image} />}
                   title={<Link to={`/${item.name}`}>{item.name}</Link>}
-                  description={`Homeworld: ${person.homeWorld}`}
+                  description={<><Text strong italic>Homeworld </Text><p>{person.homeWorld}</p></>}
                 />
               </List.Item>
             )}

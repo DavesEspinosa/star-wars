@@ -16,7 +16,7 @@ class Header extends Component {
           STAR WARS
           </li>
           <li>
-            <Search className="ant-select-selection" placeholder="input search text" onChange={this.props.onChange} enterButton />
+            <Search  placeholder="Search for character..." onChange={this.props.onChange} allowClear />
           </li>
           <li>
           <Filters />

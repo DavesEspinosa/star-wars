@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { apiGetCharacters, cardInfo, apiPeople, apiPlanets, apiSearch, residentInfo, peopleInfoFilter } from "../utils"
+import { apiGetCharacters, cardInfo, apiPeople, apiPlanets, apiSearch, residentInfo, peopleInfoFilter, mycomparator } from "../utils"
 
 const { Consumer, Provider } = React.createContext()
 
@@ -35,13 +35,13 @@ class StarWarsProvider extends React.Component {
           peopleData: await apiPeople(null),
           characters: await apiGetCharacters(),
           isLoaded: true,
+          hasMore:true,
           isLoading: false,
         })
         
       }
       } catch (error) {
         this.setState({
-            ...this.state,
             isLoaded: false,
             isLoading: true,
             error: error
@@ -49,29 +49,6 @@ class StarWarsProvider extends React.Component {
           })
       }
     }
-
-  getAllPeople = async (value) => {
-      try {
-       const { characters } = this.state
-    
-       const female = await peopleInfoFilter(characters)
-       const result = female.filter(femaleResult => femaleResult.gender === value) 
-              this.setState({
-                  ...this.state,
-                  people: result,
-                  hasMore: false,
-                  isLoaded: true,
-                  isLoading: false
-                })      
-        } catch (error) {
-          this.setState({
-              ...this.state,
-              isLoaded: false,
-              isLoading: true,
-              error: error
-            })
-        }
-  }
 
   getRestPeople = async () => {
         const { people, peopleData, characters } = this.state
@@ -89,13 +66,13 @@ class StarWarsProvider extends React.Component {
                     people: [...people, ...(await cardInfo(nextPeople.results, characters))],
                     peopleData: nextPeople,
                     isLoaded: true,
+                    hasMore: true,
                     isLoading: false
                   })      
             }
             return null
           } catch (error) {
             this.setState({
-                ...this.state,
                 isLoaded: false,
                 isLoading: true,
                 error: error
@@ -109,6 +86,7 @@ class StarWarsProvider extends React.Component {
             const {results} = await apiSearch(value)
               this.setState({
                   ...this.state,
+                  isLoading: false,
                   people: await cardInfo(results, characters)
                 })
           } catch (error) {
@@ -116,21 +94,61 @@ class StarWarsProvider extends React.Component {
           }
     }
 
-    clearFilters = async () => {
+    radioFilters = async (value) => {
       try {
+       const { characters } = this.state
+            this.setState({
+              ...this.state,
+              isLoading: true
+            }) 
+            if (value === 'heaviest') {
+              const older = await peopleInfoFilter(characters)
+              //const subst = value.replace('BBY', '')
+              const result = older.sort((a, b) => parseFloat(a.mass) - parseFloat(b.mass))
+                     this.setState({
+                         ...this.state,
+                         people: result,
+                         hasMore: false,
+                         isLoaded: true,
+                         isLoading: false
+                       })      
+            } else if (value === 'female' || 'male') {
+              const gender = await peopleInfoFilter(characters)
+              const result = gender.filter(genderResult => genderResult.gender === value) 
+                     this.setState({
+                         ...this.state,
+                         people: result,
+                         hasMore: false,
+                         isLoaded: true,
+                         isLoading: false
+                       })      
+            }
+   
+        } catch (error) {
+          this.setState({
+              isLoaded: false,
+              isLoading: true,
+              error: error
+            })
+        }
+  }
+
+    clearFilters = async (value) => {
+      try {
+        if (value) {
           const { results } = await apiPeople(null)
           this.setState({
             ...this.state,
               people: await cardInfo(results, await apiGetCharacters()),
               peopleData: await apiPeople(null),
               characters: await apiGetCharacters(),
-              hasMore:true,
+              hasMore: true,
               isLoaded: true,
               isLoading: false,
-            })
+            })      
+        }
         } catch (error) {
           this.setState({
-              ...this.state,
               isLoaded: false,
               isLoading: true,
               error: error
@@ -152,6 +170,7 @@ class StarWarsProvider extends React.Component {
             this.setState({
               ...this.state,
               person: person,
+              hasMore: true, 
               residents: dataWithoutPerson,
               isLoading: false
             })      
@@ -166,6 +185,7 @@ class StarWarsProvider extends React.Component {
                       ...this.state,
                       person: person[0],
                       residents: dataWithoutPerson,
+                      hasMore: true, 
                       isLoading: false
                     })
        
@@ -178,13 +198,13 @@ class StarWarsProvider extends React.Component {
   render() {
     const { people, peopleData, characters, isLoading, isLoaded, residents, person, hasMore } = this.state;
 
-    const { clearFilters, getAllPeople, getFirstTen, getRestPeople, filterPeople, getPerson } = this;
+    const { clearFilters, radioFilters, getFirstTen, getRestPeople, filterPeople, getPerson } = this;
     return  (
       <Provider
         value={{
           clearFilters,
           getFirstTen,
-          getAllPeople,
+          radioFilters,
           getPerson,
           filterPeople,
           getRestPeople,
@@ -209,11 +229,11 @@ const withContext = (WrappedComponent) => {
     render() {
       return (
         <Consumer>
-          {({ people, clearFilters, getAllPeople, getPerson,  getRestPeople, filterPeople, peopleData, hasMore, characters, isLoading, residents, isLoaded, getFirstTen, person }) => {
+          {({ people, clearFilters, radioFilters, getPerson,  getRestPeople, filterPeople, peopleData, hasMore, characters, isLoading, residents, isLoaded, getFirstTen, person }) => {
             return (
               <WrappedComponent
                 clearFilters={clearFilters}
-                getAllPeople={getAllPeople}
+                radioFilters={radioFilters}
                 hasMore={hasMore}
                 person={person}
                 getPerson={getPerson}

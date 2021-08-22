@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withContext } from '../context/context'
-import { BackTop} from "antd"
+import { BackTop, Spin} from "antd"
+import { ArrowUpOutlined } from '@ant-design/icons';
 import Header from './../pages/Header'
 import CardCharacters from '../components/CardCharacters'
 import InfiniteScroll from "react-infinite-scroll-component"
@@ -15,7 +16,7 @@ class Main extends Component {
       }
 
     onChange = async (e) => {
-        const { people, filterPeople, getFirstTen } = this.props
+        const { filterPeople, people, getFirstTen } = this.props
 
         const value = e.target.value
         if (value !== '' ) {
@@ -25,15 +26,17 @@ class Main extends Component {
          }
     }
 
+
     render() {
-        const { people, getRestPeople, hasMore } = this.props
+        const { people, getRestPeople, hasMore, isLoading } = this.props
         const peopleFromLocalStorage = JSON.parse(localStorage.getItem('allPeople'))  
         
         return (
         <div className='app-wrap'>
             <div className={people.length <= 4 ? 'starsOne' : 'starsAll'}>
-          <Header onChange={this.onChange} />
-        <InfiniteScroll
+          <Header  onChange={this.onChange} />
+          <Spin spinning={navigator.onLine ? isLoading : false} size="large">
+          <InfiniteScroll
                 dataLength={people.length} 
                 next={getRestPeople}
                 hasMore={hasMore}
@@ -48,9 +51,18 @@ class Main extends Component {
                 <CardCharacters people={people }/> : 
                 <CardCharacters people={peopleFromLocalStorage}/> 
             }
-                </InfiniteScroll>
-      
-            <BackTop />
+                </InfiniteScroll>      
+                </Spin>
+            <BackTop>
+                <div style={{backgroundColor: 'white', color:'black',height: 50,
+                    width: 50,
+                    lineHeight: '50px',
+                    borderRadius: 4,
+                    textAlign: 'center',
+                    fontSize: 25,}}>
+                        <ArrowUpOutlined />
+                    </div>
+            </BackTop>
             </div>
           </div>
             

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withContext } from '../context/context'
 import { Card, Modal, Spin } from "antd"
 import {
-  EditOutlined,  SettingOutlined
+  FilterFilled,  HomeFilled
 } from '@ant-design/icons'
 
 const { Meta } = Card
@@ -12,9 +12,10 @@ export class ModalComponent extends Component {
       const {visible, person, handleCancel, isLoading } = this.props
         return (
             <Modal
+            closable={false}
             visible={visible}
             onCancel={handleCancel}
-            onOk={handleCancel}
+            footer={null}
           >
             <div style={{display: 'flex', justifyContent: 'center'}}>
             <Spin spinning={isLoading}>
@@ -25,8 +26,8 @@ export class ModalComponent extends Component {
                   <img alt={person.image} style={{ height: "400px" }} src={person.image} />
                 }
                 actions={[
-                 <p><SettingOutlined key="setting" style={{marginRight:'1rem'}}/>{person.homeWorld}</p>,
-                 <p><EditOutlined style={{marginRight:'1rem'}} key="edit" />{person.films?.length}</p>,
+                 <p><HomeFilled key="setting" style={{marginRight:'1rem'}}/>{person.homeWorld}</p>,
+                 <p><FilterFilled style={{marginRight:'1rem'}} key="edit" />{person.films?.length}</p>,
                 ]}
               >
                 <Meta

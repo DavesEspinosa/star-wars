@@ -1,50 +1,49 @@
-import React, { Component, Tag } from 'react'
+import React, { Component } from 'react'
 import { Radio,} from "antd"
 import { withContext } from '../context/context'
 
 
 class Filters extends Component {
-    // state = {
-    //     isChecked: true
-    // }
+
     onChange = async (e) => {
 
-        const { clearFilters, getAllPeople } = this.props
-        if (e.target.value === 'female') {
-            getAllPeople(e.target.value)  
+        const { clearFilters, radioFilters } = this.props
+        if (e.target.value === 'female' || 'male' || 'heaviest') {
+            radioFilters(e.target.value)  
         }
         if (e.target.value === 'clear') {
-            clearFilters()
-            // this.setState({
-            //     isChecked: true
-            // })
+            clearFilters(e.target.value)
         }
     }
 
     render() {
-        //const {isChecked} = this.state
         return (
             <>
              <Radio.Group onChange={this.onChange} size="large" >
               <Radio.Button
+                style={{marginLeft: '8rem'}}
+
                 value='female'
                 defaultChecked={false}
-                //key=
               >
                 Female
               </Radio.Button>
               <Radio.Button
-                value='b'
+                value='male'
                 defaultChecked={false}
-
-                //key=
               >
-                Sort
+                Male
               </Radio.Button>
               <Radio.Button
+                value='heaviest'
+                defaultChecked={false}
+              >
+                Heaviest first
+              </Radio.Button>
+              <Radio.Button
+                style={{marginLeft: '5rem'}}
                 value='clear'
                 defaultChecked={false}
-                //checked={!isChecked}
               >
                 Clear
               </Radio.Button>

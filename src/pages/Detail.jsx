@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import {  List, Typography, Divider, Image, Row, Col } from "antd"
+import {
+    HomeFilled
+} from '@ant-design/icons'
+import { Link } from "react-router-dom"
 import { withContext } from '../context/context'
-import { allPeople } from '../utils'
 import ModalComponent from '../components/ModalComponent'
 import ListResidents from '../components/ListResidents'
 
@@ -10,7 +13,9 @@ class Detail extends Component {
   state = {
     collapsed: false,
     visible: true,  
-    isLoading: true
+    isLoading: true,
+    peopleOffline:[],
+    personOffline: {} 
   }
 
     componentDidMount  () {
@@ -27,9 +32,9 @@ class Detail extends Component {
     }
 
     componentDidUpdate (prevProps) {
-      const {location, match} = this.props
+      const {location, match } = this.props
       const {params} = match
-       
+
       if (location.pathname !== prevProps.location.pathname) {
           this.personDetail(params.name)
           this.setState({
@@ -41,10 +46,14 @@ class Detail extends Component {
     }
 
     getResidentsFromLocal = () => {
-      if (allPeople) {
-        console.log(`allPeople`, allPeople)
-    }
+      const peopleFromLocalStorage = JSON.parse(localStorage.getItem('allPeople'))  
 
+      if (!peopleFromLocalStorage) {
+        this.setState({ ...this.state, peopleOffline: peopleFromLocalStorage })
+      }
+      if (navigator.onLine) {
+        
+      }
     }
 
     personDetail = async (name) => {
@@ -65,7 +74,10 @@ class Detail extends Component {
         return (
           <>
           <Row style={{margin: '1rem'}}>
-              <Divider orientation="right"><Title level={4}>THE SELECTED CHARACTER</Title></Divider>
+              <Divider orientation="left"><Link
+                to={'/'}><Title level={5}><HomeFilled /> Back Home</Title></Link>
+                </Divider>
+              <Divider orientation="right"><Title level={4}>SELECTED CHARACTER</Title></Divider>
             <Col span={6} >
             <Image
               width={200}

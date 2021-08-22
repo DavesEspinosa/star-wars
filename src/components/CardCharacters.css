@@ -1,0 +1,26 @@
+/* .card{
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    overflow-y: scroll;
+    
+  
+    text-align: center;
+    padding: 35px;
+    vertical-align: top;
+    margin: 10px;
+    color: #fff;
+    position: relative;
+    border-radius: 50%;
+   
+    box-shadow: inset 0px 0px 130px 0px rgba(0, 132, 255, 0.75);
+    border: 3px solid rgb(114, 210, 255);
+    
+    transition: all .3s;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  
+  .card::-webkit-scrollbar { 
+    display: none; 
+  } */

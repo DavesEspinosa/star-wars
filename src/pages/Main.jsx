@@ -25,12 +25,19 @@ class Main extends Component {
             getFirstTen()
          }
     }
+    
+    componentDidUpdate () {
+        const { getFirstTen } = this.props
 
+         if (this.props.people.length === 0) {
+                getFirstTen()
+        }
+        }
 
     render() {
         const { people, getRestPeople, hasMore, isLoading } = this.props
         const peopleFromLocalStorage = JSON.parse(localStorage.getItem('allPeople'))  
-        
+
         return (
         <div className='app-wrap'>
             <div className={people.length <= 4 ? 'starsOne' : 'starsAll'}>

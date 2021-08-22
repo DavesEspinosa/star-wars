@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { apiGetCharacters, cardInfo, apiPeople, apiPlanets, apiSearch, residentInfo, peopleInfoFilter, mycomparator } from "../utils"
+import { apiGetCharacters, cardInfo, apiPeople, apiPlanets, apiSearch, residentInfo, peopleInfoFilter, mycomparator, peopleOffline, characterOffline } from "../utils"
 
 const { Consumer, Provider } = React.createContext()
 
@@ -20,12 +20,11 @@ class StarWarsProvider extends React.Component {
       if (navigator.onLine) {
         const { results } = await apiPeople(null)
         
+        
         localStorage.setItem('characters', JSON.stringify(await apiGetCharacters()))
-        const characters = JSON.parse(localStorage.getItem('characters'))  
-        const peopleExist = JSON.parse(localStorage.getItem('allPeople'))
 
-        if (!peopleExist) {
-            const allPeople = await peopleInfoFilter(characters)
+        if (!peopleOffline) {
+            const allPeople = await peopleInfoFilter(characterOffline)
             localStorage.setItem('allPeople', JSON.stringify(allPeople))   
         }
     

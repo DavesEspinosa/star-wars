@@ -7,6 +7,7 @@ import { Link } from "react-router-dom"
 import { withContext } from '../context/context'
 import ModalComponent from '../components/ModalComponent'
 import ListResidents from '../components/ListResidents'
+import { peopleOffline, selectedCharacter } from '../utils'
 
 const { Text, Title } = Typography
 class Detail extends Component {
@@ -46,13 +47,13 @@ class Detail extends Component {
     }
 
     getResidentsFromLocal = () => {
-      const peopleFromLocalStorage = JSON.parse(localStorage.getItem('allPeople'))  
-
-      if (!peopleFromLocalStorage) {
-        this.setState({ ...this.state, peopleOffline: peopleFromLocalStorage })
+      if (!peopleOffline) {
+        this.setState({ ...this.state, peopleOffline: peopleOffline })
       }
-      if (navigator.onLine) {
-        
+      if (!navigator.onLine) {
+        const {peopleOffline} = this.state
+        const selectedCharacter = (characters, person) => characters?.find((res) => res.name.toLowerCase() === person.name.toLowerCase())
+
       }
     }
 
@@ -70,7 +71,7 @@ class Detail extends Component {
 
     render() {
         const {person} = this.props
-        const {visible, isLoading} = this.state
+        const {visible, isLoading, personOffline} = this.state
         return (
           <>
           <Row style={{margin: '1rem'}}>
@@ -79,10 +80,11 @@ class Detail extends Component {
                 </Divider>
               <Divider orientation="right"><Title level={4}>SELECTED CHARACTER</Title></Divider>
             <Col span={6} >
+              
             <Image
               width={200}
               height={270}
-              src={person.image}
+              src={navigator.onLine ? person.image : personOffline.image } 
             />
             </Col>
             <Col span={18}>

@@ -4,7 +4,9 @@ const API_URL = "https://swapi.dev/api"
 const default_image = "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
 
 
-export const allPeople = JSON.parse(localStorage.getItem('allPeople'))  
+export const peopleOffline = JSON.parse(localStorage.getItem('allPeople'))  
+export const characterOffline = JSON.parse(localStorage.getItem('characters'))  
+
 export const selectedCharacter = (characters, person) => characters?.find((res) => res.name.toLowerCase() === person.name.toLowerCase())
 
 export const apiGetCharacters = async () => {

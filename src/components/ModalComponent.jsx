@@ -9,7 +9,7 @@ const { Meta } = Card
 
 export class ModalComponent extends Component {
     render() {
-      const {visible, person, handleCancel, isLoading } = this.props
+      const {visible, person, handleCancel } = this.props
         return (
             <Modal
             closable={false}
@@ -18,7 +18,6 @@ export class ModalComponent extends Component {
             footer={null}
           >
             <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Spin spinning={isLoading}>
                 <Card
                 style={{ width: 300 }}
                 hoverable
@@ -34,7 +33,6 @@ export class ModalComponent extends Component {
                   title={person.name}                    
                   />
               </Card>
-            </Spin>
             </div>
          </Modal>
         )

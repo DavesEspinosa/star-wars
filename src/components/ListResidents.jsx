@@ -9,7 +9,7 @@ import {
 const { Panel } = Collapse
 const { Text } = Typography
 
-export class ModalComponent extends Component {
+export class ListResidents extends Component {
     render() {
       const {residents, person } = this.props
         return (
@@ -43,4 +43,4 @@ export class ModalComponent extends Component {
     }
 }
 
-export default withContext(ModalComponent)
+export default withContext(ListResidents)

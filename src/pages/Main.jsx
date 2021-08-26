@@ -12,7 +12,7 @@ class Main extends Component {
 
     componentDidMount() {
         const { getFirstTen } = this.props
-        getFirstTen()
+            getFirstTen()
       }
 
     onChange = async (e) => {
